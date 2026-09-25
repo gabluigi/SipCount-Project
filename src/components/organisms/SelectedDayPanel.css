@@ -1,0 +1,26 @@
+.day-panel {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-text);
+  border-radius: 8px;
+  padding: var(--space-2);
+}
+
+.day-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+  gap: var(--space-2);
+}
+
+.day-panel-head h2 {
+  font-size: var(--font-size-md);
+}
+
+@media (max-width: 639px) {
+  .day-panel-head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-1);
+  }
+}

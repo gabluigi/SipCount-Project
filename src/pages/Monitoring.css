@@ -1,0 +1,56 @@
+.mon-main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-2);
+}
+
+.mon-head h1 {
+  font-size: var(--font-size-lg);
+}
+
+.mon-totals {
+  color: var(--color-strong);
+  font-size: var(--font-size-sm);
+  margin: 4px 0 var(--space-2);
+}
+
+.mon-toggle {
+  margin-bottom: var(--space-2);
+}
+
+.mon-chart {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-text);
+  border-radius: 8px;
+  padding: var(--space-2);
+}
+
+.mon-numbers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-text);
+  border-radius: 8px;
+}
+
+.mon-numbers li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-strong);
+  font-size: var(--font-size-sm);
+}
+
+.mon-numbers li:last-child {
+  border-bottom: none;
+}
+
+.mon-numbers li.empty-day {
+  color: var(--color-strong);
+}
+
+.mon-day-label {
+  font-weight: 600;
+  width: 50px;
+}

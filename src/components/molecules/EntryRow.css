@@ -1,0 +1,88 @@
+.entry-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) 0;
+  border-bottom: 1px solid var(--color-strong);
+  font-size: var(--font-size-sm);
+}
+
+.entry-row:last-child {
+  border-bottom: none;
+}
+
+.entry-row-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.entry-name {
+  font-weight: 600;
+}
+
+.entry-size {
+  color: var(--color-strong);
+  font-size: 12px;
+}
+
+.entry-row-side {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.entry-cal {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.entry-row-actions {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--color-strong);
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+.entry-row-editing {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-1);
+  padding: var(--space-1) 0 var(--space-2);
+}
+
+.entry-edit-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-1);
+}
+
+.entry-edit-grid label {
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  color: var(--color-strong);
+  gap: 3px;
+}
+
+.entry-edit-grid input {
+  font-size: var(--font-size-sm);
+  padding: 4px 6px;
+  border: 1px solid var(--color-strong);
+  border-radius: 4px;
+  font-family: var(--font-body);
+}
+
+@media (max-width: 639px) {
+  .entry-edit-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

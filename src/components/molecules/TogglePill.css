@@ -1,0 +1,27 @@
+.pill-row {
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.pill {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  padding: 5px 13px;
+  border-radius: 20px;
+  border: 1.5px solid var(--color-strong);
+  color: var(--color-strong);
+  background: transparent;
+  cursor: pointer;
+}
+
+.pill.active {
+  background: var(--color-accent);
+  color: var(--color-text);
+  border-color: var(--color-text);
+}
+
+.pill:focus-visible {
+  outline: 2px solid var(--color-strong);
+  outline-offset: 2px;
+}

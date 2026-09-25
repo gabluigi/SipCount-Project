@@ -1,0 +1,83 @@
+.navbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-bg);
+  padding: var(--space-2);
+  border-bottom: 2px solid var(--color-text);
+}
+
+.navbar-brand {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--font-size-md);
+  color: var(--color-text);
+}
+
+/* desktop: full links, no hamburger */
+.navbar-links {
+  display: flex;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+}
+
+.navbar-links a,
+.navbar-drawer a {
+  color: var(--color-strong);
+  text-decoration: none;
+  padding-bottom: 2px;
+}
+
+.navbar-links a.current,
+.navbar-drawer a.current {
+  color: var(--color-text);
+  font-weight: 600;
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.navbar-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.navbar-hamburger span {
+  width: 20px;
+  height: 2px;
+  background: var(--color-text);
+}
+
+.navbar-drawer {
+  display: none;
+}
+
+/* phone: below 640px — collapse to hamburger (Design system Step F) */
+@media (max-width: 639px) {
+  .navbar-links {
+    display: none;
+  }
+
+  .navbar-hamburger {
+    display: flex;
+  }
+
+  .navbar-drawer {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--color-bg);
+    border-bottom: 2px solid var(--color-text);
+    padding: var(--space-2);
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    z-index: 10;
+  }
+}

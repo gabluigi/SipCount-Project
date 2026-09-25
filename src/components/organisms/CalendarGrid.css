@@ -1,0 +1,20 @@
+.cal-grid-wrap {
+  margin-bottom: var(--space-3);
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.cal-grid-labels {
+  margin-bottom: 4px;
+}
+
+.cal-weekday-label {
+  font-size: 11px;
+  color: var(--color-strong);
+  text-align: center;
+  font-weight: 600;
+}

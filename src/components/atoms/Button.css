@@ -1,0 +1,31 @@
+.btn {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  padding: var(--space-1) var(--space-3);
+  border-radius: 20px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: opacity 0.15s ease;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-strong);
+  outline-offset: 2px;
+}
+
+/* primary — Save, Add drink, Add preset */
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-text);
+}
+
+/* ghost — Cancel */
+.btn-ghost {
+  background: transparent;
+  border-color: var(--color-strong);
+  color: var(--color-strong);
+}

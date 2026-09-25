@@ -1,0 +1,43 @@
+.cal-cell {
+  position: relative;
+  min-height: 44px;
+  border: 1px solid var(--color-strong);
+  border-radius: 4px;
+  background: var(--color-surface);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-body);
+  color: var(--color-text);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.cal-cell-blank {
+  background: transparent;
+  border: none;
+  cursor: default;
+}
+
+.cal-cell.today {
+  border-width: 2px;
+  border-color: var(--color-text);
+  font-weight: 700;
+}
+
+.cal-cell.selected {
+  background: var(--color-accent);
+}
+
+.cal-cell:focus-visible {
+  outline: 2px solid var(--color-strong);
+  outline-offset: 2px;
+}
+
+.cal-dot {
+  position: absolute;
+  bottom: 4px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+}
