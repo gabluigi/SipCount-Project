@@ -1,32 +1,87 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { loadFromStorage, saveToStorage } from '../utils/date';
+import { supabase } from '../lib/supabaseClient';
 
-const STORAGE_KEY = 'sipcount-entries';
 const EntriesContext = createContext(null);
 
+function groupByDate(rows) {
+  return rows.reduce((acc, row) => {
+    acc[row.date] = [...(acc[row.date] || []), row];
+    return acc;
+  }, {});
+}
+
 export function EntriesProvider({ children }) {
-  const [entries, setEntries] = useState(() => loadFromStorage(STORAGE_KEY, {}));
+  const [entries, setEntries] = useState({});
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    saveToStorage(STORAGE_KEY, entries);
-  }, [entries]);
+    async function loadEntries() {
+      const { data, error } = await supabase.from('entries').select('*');
+      if (error) {
+        console.error('Failed to load entries:', error.message);
+        setError(error.message);
+        return;
+      }
+      setEntries(groupByDate(data));
+    }
+    loadEntries();
+  }, []);
 
-  function addEntry(entry) {
-    const id = crypto.randomUUID();
+  async function addEntry(entry) {
+    const { data, error } = await supabase
+      .from('entries')
+      .insert({
+        date: entry.date,
+        name: entry.name,
+        size: entry.size,
+        abv: entry.abv,
+        calories: entry.calories,
+        note: entry.note,
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Failed to add entry:', error.message);
+      setError(error.message);
+      return;
+    }
+
     setEntries((prev) => ({
       ...prev,
-      [entry.date]: [...(prev[entry.date] || []), { ...entry, id }],
+      [data.date]: [...(prev[data.date] || []), data],
     }));
   }
 
-  function updateEntry(date, id, changes) {
+  async function updateEntry(date, id, changes) {
+    const { data, error } = await supabase
+      .from('entries')
+      .update(changes)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Failed to update entry:', error.message);
+      setError(error.message);
+      return;
+    }
+
     setEntries((prev) => ({
       ...prev,
-      [date]: (prev[date] || []).map((e) => (e.id === id ? { ...e, ...changes } : e)),
+      [date]: (prev[date] || []).map((e) => (e.id === id ? data : e)),
     }));
   }
 
-  function deleteEntry(date, id) {
+  async function deleteEntry(date, id) {
+    const { error } = await supabase.from('entries').delete().eq('id', id);
+
+    if (error) {
+      console.error('Failed to delete entry:', error.message);
+      setError(error.message);
+      return;
+    }
+
     setEntries((prev) => ({
       ...prev,
       [date]: (prev[date] || []).filter((e) => e.id !== id),
@@ -34,7 +89,7 @@ export function EntriesProvider({ children }) {
   }
 
   return (
-    <EntriesContext.Provider value={{ entries, addEntry, updateEntry, deleteEntry }}>
+    <EntriesContext.Provider value={{ entries, error, addEntry, updateEntry, deleteEntry }}>
       {children}
     </EntriesContext.Provider>
   );

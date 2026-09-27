@@ -1,34 +1,56 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { loadFromStorage, saveToStorage } from '../utils/date';
-import { BUILT_IN_PRESETS } from '../data/builtInPresets';
+import { supabase } from '../lib/supabaseClient';
 
-const STORAGE_KEY = 'sipcount-custom-presets';
 const PresetsContext = createContext(null);
 
 export function PresetsProvider({ children }) {
-  const [customPresets, setCustomPresets] = useState(() => loadFromStorage(STORAGE_KEY, []));
+  const [presets, setPresets] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    saveToStorage(STORAGE_KEY, customPresets);
-  }, [customPresets]);
+    async function loadPresets() {
+      const { data, error } = await supabase.from('presets').select('*');
+      if (error) {
+        console.error('Failed to load presets:', error.message);
+        setError(error.message);
+        return;
+      }
+      setPresets(data.map((p) => ({ ...p, isCustom: p.is_custom })));
+    }
+    loadPresets();
+  }, []);
+  
+  async function addPreset(preset) {
+    const { data, error } = await supabase
+      .from('presets')
+      .insert({
+        name: preset.name,
+        category: preset.category,
+        calories: preset.calories,
+        abv: preset.abv,
+        is_custom: true,
+      })
+      .select()
+      .single();
 
-  const presets = [...BUILT_IN_PRESETS, ...customPresets];
-
-  function addPreset(preset) {
-    const id = crypto.randomUUID();
-    setCustomPresets((prev) => [...prev, { ...preset, id, isCustom: true }]);
+    if (error) { console.error(error.message); setError(error.message); return; }
+    setPresets((prev) => [...prev, { ...data, isCustom: data.is_custom }]);
   }
 
-  function updatePreset(id, changes) {
-    setCustomPresets((prev) => prev.map((p) => (p.id === id ? { ...p, ...changes } : p)));
+  async function updatePreset(id, changes) {
+    const { data, error } = await supabase.from('presets').update(changes).eq('id', id).select().single();
+    if (error) { console.error(error.message); setError(error.message); return; }
+    setPresets((prev) => prev.map((p) => (p.id === id ? { ...data, isCustom: data.is_custom } : p)));
   }
 
-  function deletePreset(id) {
-    setCustomPresets((prev) => prev.filter((p) => p.id !== id));
+  async function deletePreset(id) {
+    const { error } = await supabase.from('presets').delete().eq('id', id);
+    if (error) { console.error(error.message); setError(error.message); return; }
+    setPresets((prev) => prev.filter((p) => p.id !== id));
   }
 
   return (
-    <PresetsContext.Provider value={{ presets, addPreset, updatePreset, deletePreset }}>
+    <PresetsContext.Provider value={{ presets, error, addPreset, updatePreset, deletePreset }}>
       {children}
     </PresetsContext.Provider>
   );
