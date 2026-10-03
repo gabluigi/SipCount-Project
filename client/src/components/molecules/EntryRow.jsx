@@ -36,6 +36,14 @@ function EntryRow({ entry, onEdit, onDelete }) {
             <input value={draft.size} onChange={(e) => handleField('size', e.target.value)} />
           </label>
           <label>
+            Volume (ml)
+            <input
+              type="number"
+              value={draft.volume_ml ?? ''}
+              onChange={(e) => handleField('volume_ml', e.target.value === '' ? null : Number(e.target.value))}
+            />
+          </label>
+          <label>
             ABV %
             <input
               type="number"
@@ -51,15 +59,15 @@ function EntryRow({ entry, onEdit, onDelete }) {
               onChange={(e) => handleField('calories', Number(e.target.value))}
             />
           </label>
-          <label>
-            Volume (ml)
-            <input
-              type="number"
-              value={draft.volume_ml ?? ''}
-              onChange={(e) => handleField('volume_ml', e.target.value === '' ? null : Number(e.target.value))}
-            />
-          </label>
         </div>
+        <label className="entry-note-field">
+          Note
+          <textarea
+            value={draft.note ?? ''}
+            onChange={(e) => handleField('note', e.target.value)}
+            placeholder="Optional note…"
+          />
+        </label>
         <div className="entry-row-actions">
           <Button variant="ghost" onClick={() => { setIsEditing(false); setDraft(entry); }}>Cancel</Button>
           <Button variant="primary" onClick={save}>Save</Button>
@@ -73,6 +81,7 @@ function EntryRow({ entry, onEdit, onDelete }) {
       <div className="entry-row-main">
         <span className="entry-name">{entry.name}</span>
         <span className="entry-size">{entry.size}{entry.abv ? ` · ${entry.abv}% ABV` : ''}</span>
+        {entry.note && <span className="entry-note">{entry.note}</span>}
       </div>
       <div className="entry-row-side">
         <span className="entry-cal">{entry.calories} kcal</span>
