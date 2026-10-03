@@ -7,6 +7,7 @@ const ROUTES = [
   { to: '/add', label: 'Add' },
   { to: '/history', label: 'Monitoring' },
   { to: '/drinks', label: 'Drinks' },
+  { to: '/games', label: 'Games' },
 ];
 
 /**

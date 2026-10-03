@@ -1,0 +1,50 @@
+.games-main {
+  max-width: var(--content-max-width, 600px);
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-2);
+}
+
+.games-main h1 {
+  font-family: var(--font-heading);
+  margin-bottom: var(--space-3);
+}
+
+.games-section {
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--color-strong);
+}
+
+.games-section:first-of-type {
+  border-top: none;
+}
+
+.games-section h2 {
+  font-size: var(--font-size-md);
+  margin-bottom: var(--space-2);
+}
+
+.posse-add-form {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
+}
+
+.posse-add-form input {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  padding: var(--space-1);
+  border: 1px solid var(--color-strong);
+  border-radius: 4px;
+  font-family: var(--font-body);
+}
+
+.posse-table {
+  margin-bottom: var(--space-2);
+}
+
+.games-intro {
+  color: var(--color-strong);
+  font-size: var(--font-size-sm);
+  max-width: 42ch;
+  margin-bottom: var(--space-3);
+}
