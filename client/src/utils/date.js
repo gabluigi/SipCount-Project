@@ -29,3 +29,34 @@ export function formatDateLabel(iso) {
   const date = new Date(`${iso}T00:00:00`);
   return date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
 }
+
+export const MONTH_LABELS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+export function weeksInMonth(year, month) {
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const weeks = [];
+  let currentWeek = null;
+  let currentWeekKey = null;
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = new Date(year, month, day);
+    const iso = toISO(date);
+    const dow = date.getDay();
+    const mondayOffset = dow === 0 ? -6 : 1 - dow;
+    const monday = new Date(date);
+    monday.setDate(date.getDate() + mondayOffset);
+    const weekKey = toISO(monday);
+
+    if (weekKey !== currentWeekKey) {
+      currentWeekKey = weekKey;
+      currentWeek = { key: weekKey, dates: [] };
+      weeks.push(currentWeek);
+    }
+    currentWeek.dates.push(iso);
+  }
+
+  return weeks;
+}

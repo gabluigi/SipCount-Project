@@ -63,3 +63,41 @@
 .state--error {
   color: #b33;
 }
+
+.mon-section {
+  margin-top: var(--space-3);
+}
+
+.mon-section h2 {
+  font-size: var(--font-size-md);
+  margin-bottom: var(--space-1);
+}
+
+.mon-month-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
+}
+
+.mon-month-tile {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-text);
+  border-radius: 8px;
+  padding: var(--space-1);
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+
+.mon-month-tile:hover {
+  background: var(--color-accent);
+}
+
+.mon-month-tile.selected {
+  background: var(--color-primary);
+  color: var(--color-bg);
+  border-color: var(--color-primary);
+}
