@@ -131,3 +131,12 @@
     grid-template-columns: 1fr;
   }
 }
+
+.state {
+  padding: 1.5rem 0;
+  color: #666;
+}
+
+.state--error {
+  color: #b33;
+}

@@ -3,3 +3,12 @@
   margin: 0 auto;
   padding: var(--space-2);
 }
+
+.state {
+  padding: 1.5rem 0;
+  color: #666;
+}
+
+.state--error {
+  color: #b33;
+}

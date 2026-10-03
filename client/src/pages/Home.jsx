@@ -1,3 +1,4 @@
+// src/pages/Home.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/organisms/NavBar';
@@ -15,7 +16,7 @@ const MONTH_LABELS = [
 
 function Home() {
   const navigate = useNavigate();
-  const { entries, updateEntry, deleteEntry } = useEntries();
+  const { entries, loading, error, updateEntry, deleteEntry } = useEntries();
   const today = todayISO();
 
   const [selectedDate, setSelectedDate] = useState(today);
@@ -33,6 +34,28 @@ function Home() {
   }
 
   const dayEntries = entries[selectedDate] || [];
+
+  if (loading) {
+    return (
+      <>
+        <NavBar />
+        <main className="home-main">
+          <p className="state state--loading">Loading your drinks…</p>
+        </main>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <NavBar />
+        <main className="home-main">
+          <p className="state state--error">{error}</p>
+        </main>
+      </>
+    );
+  }
 
   return (
     <>

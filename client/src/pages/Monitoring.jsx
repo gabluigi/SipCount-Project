@@ -1,3 +1,4 @@
+// src/pages/Monitoring.jsx
 import { useState } from 'react';
 import {
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid,
@@ -15,8 +16,30 @@ const VIEW_OPTIONS = [
 ];
 
 function Monitoring() {
-  const { entries } = useEntries();
+  const { entries, loading, error } = useEntries();
   const [view, setView] = useState('chart');
+
+  if (loading) {
+    return (
+      <>
+        <NavBar />
+        <main className="mon-main">
+          <p className="state state--loading">Loading this week's drinks…</p>
+        </main>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <NavBar />
+        <main className="mon-main">
+          <p className="state state--error">{error}</p>
+        </main>
+      </>
+    );
+  }
 
   const week = weekDatesFor(todayISO());
   const rows = week.map((iso) => {

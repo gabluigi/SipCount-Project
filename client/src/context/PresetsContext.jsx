@@ -1,56 +1,64 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { supabase } from '../lib/supabaseClient';
+import * as presetsRepo from '../lib/presetsRepo';
 
 const PresetsContext = createContext(null);
 
 export function PresetsProvider({ children }) {
   const [presets, setPresets] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     async function loadPresets() {
-      const { data, error } = await supabase.from('presets').select('*');
-      if (error) {
-        console.error('Failed to load presets:', error.message);
-        setError(error.message);
-        return;
+      setLoading(true);
+      try {
+        const data = await presetsRepo.getAll();
+        setPresets(data);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-      setPresets(data.map((p) => ({ ...p, isCustom: p.is_custom })));
     }
     loadPresets();
   }, []);
-  
-  async function addPreset(preset) {
-    const { data, error } = await supabase
-      .from('presets')
-      .insert({
-        name: preset.name,
-        category: preset.category,
-        calories: preset.calories,
-        abv: preset.abv,
-        is_custom: true,
-      })
-      .select()
-      .single();
 
-    if (error) { console.error(error.message); setError(error.message); return; }
-    setPresets((prev) => [...prev, { ...data, isCustom: data.is_custom }]);
+  async function addPreset(preset) {
+    try {
+      const data = await presetsRepo.create(preset);
+      setPresets((prev) => [...prev, data]);
+      return true;
+    } catch (err) {
+      setError(err.message);
+      return false;
+    }
   }
 
   async function updatePreset(id, changes) {
-    const { data, error } = await supabase.from('presets').update(changes).eq('id', id).select().single();
-    if (error) { console.error(error.message); setError(error.message); return; }
-    setPresets((prev) => prev.map((p) => (p.id === id ? { ...data, isCustom: data.is_custom } : p)));
+    try {
+      const data = await presetsRepo.update(id, changes);
+      setPresets((prev) => prev.map((p) => (p.id === id ? data : p)));
+      return true;
+    } catch (err) {
+      setError(err.message);
+      return false;
+    }
   }
 
   async function deletePreset(id) {
-    const { error } = await supabase.from('presets').delete().eq('id', id);
-    if (error) { console.error(error.message); setError(error.message); return; }
-    setPresets((prev) => prev.filter((p) => p.id !== id));
+    try {
+      await presetsRepo.remove(id);
+      setPresets((prev) => prev.filter((p) => p.id !== id));
+      return true;
+    } catch (err) {
+      setError(err.message);
+      return false;
+    }
   }
 
   return (
-    <PresetsContext.Provider value={{ presets, error, addPreset, updatePreset, deletePreset }}>
+    <PresetsContext.Provider value={{ presets, loading, error, addPreset, updatePreset, deletePreset }}>
       {children}
     </PresetsContext.Provider>
   );

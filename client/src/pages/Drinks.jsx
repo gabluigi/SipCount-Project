@@ -1,3 +1,4 @@
+// src/pages/Drinks.jsx
 import { useState } from 'react';
 import NavBar from '../components/organisms/NavBar';
 import TogglePill from '../components/molecules/TogglePill';
@@ -12,7 +13,7 @@ const FILTER_OPTIONS = [{ value: 'all', label: 'All' }, ...CATEGORIES.map((c) =>
 const BLANK_FORM = { name: '', calories: '', abv: '', category: 'other' };
 
 function Drinks() {
-  const { presets, addPreset, updatePreset, deletePreset } = usePresets();
+  const { presets, loading, error, addPreset, updatePreset, deletePreset } = usePresets();
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('all');
   const [showForm, setShowForm] = useState(false);
@@ -58,6 +59,28 @@ function Drinks() {
       addPreset(payload);
     }
     resetForm();
+  }
+
+  if (loading) {
+    return (
+      <>
+        <NavBar />
+        <main className="drinks-main">
+          <p className="state state--loading">Loading presets…</p>
+        </main>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <NavBar />
+        <main className="drinks-main">
+          <p className="state state--error">{error}</p>
+        </main>
+      </>
+    );
   }
 
   return (
