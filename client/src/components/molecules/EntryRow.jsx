@@ -51,6 +51,14 @@ function EntryRow({ entry, onEdit, onDelete }) {
               onChange={(e) => handleField('calories', Number(e.target.value))}
             />
           </label>
+          <label>
+            Volume (ml)
+            <input
+              type="number"
+              value={draft.volume_ml ?? ''}
+              onChange={(e) => handleField('volume_ml', e.target.value === '' ? null : Number(e.target.value))}
+            />
+          </label>
         </div>
         <div className="entry-row-actions">
           <Button variant="ghost" onClick={() => { setIsEditing(false); setDraft(entry); }}>Cancel</Button>

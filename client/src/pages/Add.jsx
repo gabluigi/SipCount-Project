@@ -133,6 +133,15 @@ function Add() {
               />
             </label>
             <label>
+              Volume (ml)
+              <input
+                type="number"
+                value={form.volume_ml}
+                onChange={(e) => setField('volume_ml', e.target.value === '' ? '' : Number(e.target.value))}
+                placeholder="e.g. 330"
+              />
+            </label>
+            <label>
               ABV % (optional)
               <input
                 type="number"

@@ -8,10 +8,16 @@ import EmptyState from '../components/molecules/EmptyState';
 import { useEntries } from '../context/EntriesContext';
 import { weekDatesFor, weeksInMonth, todayISO, formatDateLabel, MONTH_LABELS } from '../utils/date';
 import './Monitoring.css';
+import { gramsOfAlcoholFor } from '../utils/alcohol';
 
 const VIEW_OPTIONS = [
   { value: 'chart', label: 'Chart' },
   { value: 'numbers', label: 'Numbers' },
+];
+
+const MONTH_METRIC_OPTIONS = [
+  { value: 'alcohol', label: 'Alcohol' },
+  { value: 'calories', label: 'Calories' },
 ];
 
 function totalsFor(dates, entries) {
@@ -19,6 +25,7 @@ function totalsFor(dates, entries) {
   return {
     drinks: dayEntries.length,
     calories: dayEntries.reduce((sum, e) => sum + Number(e.calories || 0), 0),
+    grams: dayEntries.reduce((sum, e) => sum + gramsOfAlcoholFor(e.volume_ml, e.abv), 0),
   };
 }
 
@@ -28,6 +35,9 @@ function Monitoring() {
   const now = new Date();
   const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
   const year = now.getFullYear();
+
+  const [monthMetric, setMonthMetric] = useState('alcohol');
+
 
   if (loading) {
     return (
@@ -75,6 +85,8 @@ function Monitoring() {
   }));
   const monthDrinks = monthRows.reduce((sum, r) => sum + r.drinks, 0);
   const monthCalories = monthRows.reduce((sum, r) => sum + r.calories, 0);
+  const monthGrams = monthRows.reduce((sum, r) => sum + r.grams, 0);
+  
   const hasMonthEntries = monthDrinks > 0;
 
   return (
@@ -117,7 +129,12 @@ function Monitoring() {
         )}
 
         <section className="mon-section">
-          <h2>{MONTH_LABELS[selectedMonth]} {year} · {monthDrinks} drinks · {monthCalories} kcal</h2>
+          <h2>
+            {MONTH_LABELS[selectedMonth]} {year} · {monthDrinks} drinks ·{' '}
+            {monthMetric === 'alcohol'
+              ? `${monthGrams.toFixed(0)}g alcohol`
+              : `${monthCalories} kcal`}
+          </h2>
 
           <div className="mon-month-grid">
             {MONTH_LABELS.map((label, i) => (
@@ -132,6 +149,10 @@ function Monitoring() {
             ))}
           </div>
 
+          <div className="mon-toggle">
+            <TogglePill options={MONTH_METRIC_OPTIONS} active={monthMetric} onChange={setMonthMetric} />
+          </div>
+
           {!hasMonthEntries ? (
             <EmptyState message={`Nothing logged in ${MONTH_LABELS[selectedMonth]}.`} />
           ) : (
@@ -141,8 +162,16 @@ function Monitoring() {
                   <CartesianGrid strokeDasharray="3 3" stroke="#C96E12" opacity={0.3} />
                   <XAxis dataKey="label" fontSize={12} stroke="#241502" />
                   <YAxis fontSize={12} stroke="#241502" />
-                  <Tooltip formatter={(value, name) => [value, name === 'calories' ? 'kcal' : 'drinks']} />
-                  <Bar dataKey="calories" fill="#DF8D03" radius={[4, 4, 0, 0]} />
+                  <Tooltip
+                    formatter={(value, name) =>
+                      name === 'grams' ? [`${value.toFixed(0)}g`, 'alcohol'] : [value, 'kcal']
+                    }
+                  />
+                  <Bar
+                    dataKey={monthMetric === 'alcohol' ? 'grams' : 'calories'}
+                    fill="#DF8D03"
+                    radius={[4, 4, 0, 0]}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>

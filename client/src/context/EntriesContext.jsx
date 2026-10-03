@@ -39,6 +39,7 @@ export function EntriesProvider({ children }) {
         size: entry.size,
         abv: entry.abv,
         calories: entry.calories,
+        volume_ml: entry.volume_ml,
         note: entry.note,
       });
       setEntries((prev) => ({
