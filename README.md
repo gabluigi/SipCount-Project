@@ -25,17 +25,18 @@ WIP - Security features needed first resolved
 
 ```
 git clone https://github.com/gabluigi/SipCount-Project.git
-cd SipCount-Project/client
+cd SipCount-Project
 ```
 
-The app lives inside the `client/` folder of the repository.
+The app lives inside the `client/` folder. The commands below are run from
+the repository root unless noted otherwise.
 
 **How to install dependencies**
 
-From inside `client/`:
+Run this from the repository root (the folder containing `client/`):
 
 ```
-npm install
+npm --prefix client install
 ```
 
 This installs React, `react-router-dom` (for the four screens),
@@ -58,22 +59,23 @@ browser.
 
 **Environment and configuration**
 
-Copy `client/.env.example` to `client/.env` and fill in your own values:
+Copy `.env.example` to `.env` in the repository root and fill in your own values:
 
 | Name | What it is |
 | --- | --- |
 | `VITE_SUPABASE_URL` | Your Supabase project's base URL, for example `https://your-project-ref.supabase.co` (no extra path after `.co`) |
 | `VITE_SUPABASE_PUBLISHABLE_KEY` | Your project's publishable key from Settings > API Keys |
 
+Vite is configured to load environment variables from the repository root.
 `.env` is never committed. Only `.env.example`, with placeholder values,
 is kept in the repository.
 
 ## 3. How to run it
 
-From inside `client/`, start the app with:
+From the repository root, start the app with:
 
 ```
-npm run dev
+npm --prefix client run dev
 ```
 
 Then open the address shown in the terminal, usually:
