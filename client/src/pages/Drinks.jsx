@@ -1,4 +1,3 @@
-// src/pages/Drinks.jsx
 import { useState } from 'react';
 import NavBar from '../components/organisms/NavBar';
 import TogglePill from '../components/molecules/TogglePill';
@@ -34,6 +33,7 @@ function Drinks() {
     setEditingId(preset.id);
     setForm({ name: preset.name, calories: preset.calories, abv: preset.abv ?? '', category: preset.category });
     setShowForm(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function resetForm() {
