@@ -1,0 +1,86 @@
+.welcome-gate {
+  display: grid;
+  min-height: 100vh;
+  min-height: 100svh;
+  place-items: center;
+  padding: var(--space-2);
+  background: var(--color-bg);
+}
+
+.welcome-gate-card {
+  display: flex;
+  width: min(100%, 380px);
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border: 1px solid var(--field-border);
+  border-radius: 16px;
+  background: var(--color-surface);
+  text-align: center;
+  box-shadow: 0 16px 40px rgb(0 0 0 / 10%);
+}
+
+.welcome-gate-logo {
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+}
+
+.welcome-gate-card h1 {
+  font-size: var(--font-size-lg);
+}
+
+.welcome-gate-brand {
+  margin: 0 0 var(--space-1);
+  color: var(--color-strong);
+  font-weight: 600;
+}
+
+.welcome-gate-form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-1);
+  text-align: left;
+}
+
+.welcome-gate-form label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.welcome-gate-form input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+}
+
+.welcome-gate-submit {
+  min-height: 44px;
+  margin-top: var(--space-1);
+  padding: 10px 16px;
+  border: 0;
+  border-radius: var(--field-radius);
+  background: var(--color-primary);
+  color: #fff;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.welcome-gate-submit:hover {
+  filter: brightness(1.08);
+}
+
+.welcome-gate-submit:focus-visible {
+  outline: 2px solid var(--field-focus);
+  outline-offset: 3px;
+}
+
+.welcome-gate-error {
+  margin: 0;
+  color: #b33;
+  font-size: var(--font-size-sm);
+}
