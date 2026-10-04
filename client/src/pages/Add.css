@@ -23,10 +23,6 @@
   font-family: var(--font-body);
   font-size: var(--font-size-md);
   padding: 8px 10px;
-  border: 1.5px solid var(--color-text);
-  border-radius: 6px;
-  color: var(--color-text);
-  background: #fff;
 }
 
 .add-field-grid {

@@ -59,8 +59,51 @@
 }
 
 .spin-wheel-result {
+  position: relative;
   font-size: var(--font-size-md);
   font-weight: 700;
   min-height: 1.5em;
   text-align: center;
+}
+
+.spin-wheel-confetti {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.spin-wheel-confetti-piece {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 7px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--confetti-color);
+  animation: spin-wheel-confetti-pop 850ms cubic-bezier(0.16, 0.75, 0.3, 1) both;
+}
+
+@keyframes spin-wheel-confetti-pop {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--confetti-angle)) translateY(0) scale(0.4);
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(var(--confetti-angle)) translateY(-48px) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin-wheel-confetti-piece {
+    animation: none;
+    opacity: 0;
+  }
 }

@@ -1,14 +1,25 @@
-import { useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Button from '../atoms/Button';
 import './SpinWheel.css';
 
 const SEGMENT_COLORS = ['#E84855', '#3185FC', '#F9C80E', '#44AF69', '#9B5DE5', '#00BBF9', '#F77F00', '#EF476F'];
+const CONFETTI_PIECES = Array.from({ length: 12 }, (_, i) => ({
+  angle: `${i * 30}deg`,
+  color: SEGMENT_COLORS[i % SEGMENT_COLORS.length],
+}));
 
 function SpinWheel({ names }) {
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [result, setResult] = useState(null);
+  const [showConfetti, setShowConfetti] = useState(false);
   const timeoutRef = useRef(null);
+  const confettiTimeoutRef = useRef(null);
+
+  useEffect(() => () => {
+    clearTimeout(timeoutRef.current);
+    clearTimeout(confettiTimeoutRef.current);
+  }, []);
 
   const n = names.length;
   const segmentAngle = n > 0 ? 360 / n : 360;
@@ -27,6 +38,8 @@ function SpinWheel({ names }) {
   function spin() {
     if (n === 0 || spinning) return;
     clearTimeout(timeoutRef.current);
+    clearTimeout(confettiTimeoutRef.current);
+    setShowConfetti(false);
     setResult(null);
     setSpinning(true);
 
@@ -41,6 +54,8 @@ function SpinWheel({ names }) {
     timeoutRef.current = setTimeout(() => {
       setResult(names[winnerIndex]);
       setSpinning(false);
+      setShowConfetti(true);
+      confettiTimeoutRef.current = setTimeout(() => setShowConfetti(false), 900);
     }, 3600);
   }
 
@@ -70,8 +85,19 @@ function SpinWheel({ names }) {
         </div>
       </div>
 
-      <div className="spin-wheel-result">
+      <div className="spin-wheel-result" role="status" aria-live="polite">
         {spinning ? 'Spinning…' : result || '\u00A0'}
+        {showConfetti && (
+          <span className="spin-wheel-confetti" aria-hidden="true">
+            {CONFETTI_PIECES.map((piece, index) => (
+              <span
+                key={index}
+                className="spin-wheel-confetti-piece"
+                style={{ '--confetti-angle': piece.angle, '--confetti-color': piece.color }}
+              />
+            ))}
+          </span>
+        )}
       </div>
 
       <Button variant="primary" onClick={spin}>

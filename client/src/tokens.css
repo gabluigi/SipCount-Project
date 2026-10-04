@@ -6,6 +6,11 @@
   --color-primary: #DF8D03;
   --color-strong: #C96E12;
   --color-text: #241502;
+  --field-bg: #fffbe2;
+  --field-border: #d6c989;
+  --field-placeholder: #81764f;
+  --field-focus: #DF8D03;
+  --field-radius: 10px;
 
   /* ---- type tokens (Step C) ---- */
   --font-size-lg: 28px;   /* Heading — Space Grotesk, Bold */
@@ -23,8 +28,48 @@
   /* below 640px = phone layout, 640px and up = desktop layout */
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #17140f;
+    --color-surface: #262116;
+    --color-accent: #4f390f;
+    --color-primary: #df8d03;
+    --color-strong: #e8ac4e;
+    --color-text: #fff4d6;
+    --field-bg: #201b13;
+    --field-border: #746344;
+    --field-placeholder: #b9ac8d;
+    --field-focus: #f6bd4f;
+  }
+}
+
 * {
   box-sizing: border-box;
+}
+
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+select {
+  color: var(--color-text);
+  background: var(--field-bg);
+  border: 1px solid var(--field-border);
+  border-radius: var(--field-radius);
+  font-family: var(--font-body);
+  transition: border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
+}
+
+input:not([type="checkbox"]):not([type="radio"])::placeholder,
+textarea::placeholder {
+  color: var(--field-placeholder);
+  opacity: 1;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  border-color: var(--field-focus);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--field-focus) 24%, transparent);
 }
 
 body {
@@ -34,6 +79,7 @@ body {
   font-family: var(--font-body);
   font-size: var(--font-size-md);
   line-height: 1.5;
+  color-scheme: light dark;
 }
 
 h1, h2, h3 {

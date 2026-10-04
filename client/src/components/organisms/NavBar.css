@@ -9,10 +9,27 @@
 }
 
 .navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
   font-family: var(--font-heading);
   font-weight: 700;
   font-size: var(--font-size-md);
   color: var(--color-text);
+  text-decoration: none;
+}
+
+.navbar-brand:focus-visible {
+  border-radius: 4px;
+  outline: 2px solid var(--field-focus);
+  outline-offset: 4px;
+}
+
+.navbar-brand img {
+  display: block;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 /* desktop: full links, no hamburger */

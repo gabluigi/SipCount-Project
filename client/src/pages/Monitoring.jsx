@@ -3,6 +3,7 @@ import {
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid,
 } from 'recharts';
 import NavBar from '../components/organisms/NavBar';
+import LoadingScreen from '../components/atoms/LoadingScreen';
 import TogglePill from '../components/molecules/TogglePill';
 import EmptyState from '../components/molecules/EmptyState';
 import { useEntries } from '../context/EntriesContext';
@@ -19,6 +20,18 @@ const MONTH_METRIC_OPTIONS = [
   { value: 'alcohol', label: 'Alcohol' },
   { value: 'calories', label: 'Calories' },
 ];
+
+const CHART_TICK = { fill: 'var(--color-text)' };
+const CHART_TOOLTIP_STYLE = {
+  contentStyle: {
+    backgroundColor: 'var(--color-surface)',
+    border: '1px solid var(--field-border)',
+    borderRadius: '8px',
+    color: 'var(--color-text)',
+  },
+  labelStyle: { color: 'var(--color-text)' },
+  itemStyle: { color: 'var(--color-text)' },
+};
 
 function totalsFor(dates, entries) {
   const dayEntries = dates.flatMap((iso) => entries[iso] || []);
@@ -38,16 +51,8 @@ function Monitoring() {
 
   const [monthMetric, setMonthMetric] = useState('alcohol');
 
-
   if (loading) {
-    return (
-      <>
-        <NavBar />
-        <main className="mon-main">
-          <p className="state state--loading">Loading your drinks…</p>
-        </main>
-      </>
-    );
+    return <LoadingScreen />;
   }
 
   if (error) {
@@ -108,10 +113,13 @@ function Monitoring() {
           <div className="mon-chart">
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={weekRows}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#C96E12" opacity={0.3} />
-                <XAxis dataKey="label" fontSize={12} stroke="#241502" />
-                <YAxis fontSize={12} stroke="#241502" />
-                <Tooltip formatter={(value, name) => [value, name === 'calories' ? 'kcal' : 'drinks']} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--field-border)" />
+                <XAxis dataKey="label" fontSize={12} stroke="var(--color-strong)" tick={CHART_TICK} />
+                <YAxis fontSize={12} stroke="var(--color-strong)" tick={CHART_TICK} />
+                <Tooltip
+                  {...CHART_TOOLTIP_STYLE}
+                  formatter={(value, name) => [value, name === 'calories' ? 'kcal' : 'drinks']}
+                />
                 <Bar dataKey="calories" fill="#DF8D03" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -159,10 +167,11 @@ function Monitoring() {
             <div className="mon-chart">
               <ResponsiveContainer width="100%" height={220}>
                 <BarChart data={monthRows}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#C96E12" opacity={0.3} />
-                  <XAxis dataKey="label" fontSize={12} stroke="#241502" />
-                  <YAxis fontSize={12} stroke="#241502" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--field-border)" />
+                  <XAxis dataKey="label" fontSize={12} stroke="var(--color-strong)" tick={CHART_TICK} />
+                  <YAxis fontSize={12} stroke="var(--color-strong)" tick={CHART_TICK} />
                   <Tooltip
+                    {...CHART_TOOLTIP_STYLE}
                     formatter={(value, name) =>
                       name === 'grams' ? [`${value.toFixed(0)}g`, 'alcohol'] : [value, 'kcal']
                     }

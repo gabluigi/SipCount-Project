@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import NavBar from '../components/organisms/NavBar';
 import TogglePill from '../components/molecules/TogglePill';
 import Button from '../components/atoms/Button';
+import LoadingScreen from '../components/atoms/LoadingScreen';
 import { useEntries } from '../context/EntriesContext';
 import { usePresets } from '../context/PresetsContext';
 import { todayISO } from '../utils/date';
@@ -17,7 +18,7 @@ function Add() {
   const navigate = useNavigate();
   const location = useLocation();
   const { addEntry } = useEntries();
-  const { presets } = usePresets();
+  const { presets, loading } = usePresets();
 
   const [mode, setMode] = useState('preset');
   const [search, setSearch] = useState('');
@@ -69,6 +70,10 @@ function Add() {
       date: form.date,
     });
     navigate('/');
+  }
+
+  if (loading) {
+    return <LoadingScreen />;
   }
 
   return (

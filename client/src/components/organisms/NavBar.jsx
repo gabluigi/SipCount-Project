@@ -20,7 +20,10 @@ function NavBar() {
 
   return (
     <header className="navbar">
-      <span className="navbar-brand">SipCount</span>
+      <NavLink className="navbar-brand" to="/" aria-label="SipCount home">
+        <img src="/sipcountlogo.svg" alt="" aria-hidden="true" />
+        SipCount
+      </NavLink>
 
       <nav className="navbar-links">
         {ROUTES.map((r) => (

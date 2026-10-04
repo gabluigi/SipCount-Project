@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import NavBar from '../components/organisms/NavBar';
+import LoadingScreen from '../components/atoms/LoadingScreen';
 import TogglePill from '../components/molecules/TogglePill';
 import EmptyState from '../components/molecules/EmptyState';
 import Button from '../components/atoms/Button';
@@ -62,14 +63,7 @@ function Drinks() {
   }
 
   if (loading) {
-    return (
-      <>
-        <NavBar />
-        <main className="drinks-main">
-          <p className="state state--loading">Loading presets…</p>
-        </main>
-      </>
-    );
+    return <LoadingScreen />;
   }
 
   if (error) {

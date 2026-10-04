@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import NavBar from '../components/organisms/NavBar';
+import LoadingScreen from '../components/atoms/LoadingScreen';
 import PosseRow from '../components/molecules/PosseRow';
 import SpinWheel from '../components/organisms/SpinWheel';
 import ScenarioPicker from '../components/organisms/ScenarioPicker';
@@ -20,14 +21,7 @@ function Games() {
   }
 
   if (loading) {
-    return (
-      <>
-        <NavBar />
-        <main className="games-main">
-          <p className="state state--loading">Loading the posse…</p>
-        </main>
-      </>
-    );
+    return <LoadingScreen />;
   }
 
   if (error) {

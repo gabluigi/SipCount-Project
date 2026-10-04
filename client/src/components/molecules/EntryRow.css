@@ -79,8 +79,6 @@
   min-width: 0;
   font-size: var(--font-size-sm);
   padding: 4px 6px;
-  border: 1px solid var(--color-strong);
-  border-radius: 4px;
   font-family: var(--font-body);
 }
 
@@ -108,8 +106,6 @@
 .entry-note-field textarea {
   font-size: var(--font-size-sm);
   padding: 4px 6px;
-  border: 1px solid var(--color-strong);
-  border-radius: 4px;
   font-family: var(--font-body);
   min-height: 48px;
   resize: vertical;

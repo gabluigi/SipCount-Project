@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/organisms/NavBar';
+import LoadingScreen from '../components/atoms/LoadingScreen';
 import CalendarHeader from '../components/organisms/CalendarHeader';
 import CalendarGrid from '../components/organisms/CalendarGrid';
 import SelectedDayPanel from '../components/organisms/SelectedDayPanel';
@@ -35,14 +36,7 @@ function Home() {
   const dayEntries = entries[selectedDate] || [];
 
   if (loading) {
-    return (
-      <>
-        <NavBar />
-        <main className="home-main">
-          <p className="state state--loading">Loading your drinks…</p>
-        </main>
-      </>
-    );
+    return <LoadingScreen />;
   }
 
   if (error) {
