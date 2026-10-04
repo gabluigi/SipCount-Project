@@ -1,5 +1,6 @@
 # SipCount
-![Built with AI assistance]([https://img.shields.io/badge/built%20with-AI%20assistance-0b5fff](https://img.shields.io/badge/built%20with-AI%20assistance-0b5fff))
+
+![Built with AI assistance](https://img.shields.io/badge/built%20with-AI%20assistance-0b5fff)
 
 ## 1. Overview
 
@@ -167,7 +168,7 @@ Louis Gabriel Malig 2215-6APSI CS403
 
 **AI usage:** 
 
-![Built with AI assistance]([https://img.shields.io/badge/built%20with-AI%20assistance-0b5fff](https://img.shields.io/badge/built%20with-AI%20assistance-0b5fff))
+![Built with AI assistance](https://img.shields.io/badge/built%20with-AI%20assistance-0b5fff)
 
 This project was built with Claude as an AI development assistant. Claude was used heavily for the frontend, including UI design, page structure, styling, animations, and feature implementation. I was mainly responsible for the backend and data layer, including designing the Supabase database schema, Row Level Security (RLS) policies, and the main database logic. I also reviewed, changed, and tested AI-generated code when needed.
 
