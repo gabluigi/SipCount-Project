@@ -1,4 +1,5 @@
 # SipCount
+![Built with AI assistance]([https://img.shields.io/badge/built%20with-AI%20assistance-0b5fff](https://img.shields.io/badge/built%20with-AI%20assistance-0b5fff))
 
 ## 1. Overview
 
@@ -89,7 +90,7 @@ today's date marked, and a panel below it showing that day's logged
 drinks. If you already added presets through the SQL script, the Drinks
 screen should also show them right away.
 
-## 4. Features and usage
+## 4. Features and usage - WIP
 
 **Home (`/`)**
 Shows a month calendar. Days with logged drinks are marked. Tapping a day
@@ -122,7 +123,7 @@ SipCount does not have its own backend server. The React app talks
 directly to Supabase's built-in API, using the publishable key and the
 access rules set up in the schema script.
 
-## 5. Project structure
+## 5. Project structure - WIP
 
 ```
 SipCount-Project/
@@ -154,38 +155,25 @@ backend. SipCount talks to Supabase's own built-in API directly from the
 React app, so there is no separate Express server to write. The `server/`
 folder is left empty on purpose.
 
-## 6. Screenshots
+## 6. Screenshots - WIP
 
-Screenshots are not included yet. This will be added in a future update,
-once the app's styling is further along.
+Screenshots are not included yet. 
 
-## 7. Known issues and next steps
 
-**Known issues**
+## Author
 
-- There is no login or per-user access control yet. Anyone with the
-  Supabase publishable key can read or write any row in the database.
-  This is acceptable for a single-user school project, but would need to
-  change for a real multi-user app.
-- There is no confirmation step before deleting an entry or a preset —
-  deleting happens right away.
-- Form validation is basic. It checks that required fields are filled,
-  but does not catch every possible mistake.
-- No screenshots yet (see section 6).
-- The overall visual styling still needs a lot of polish. Right now the
-  app uses the design system's tokens correctly, but the layout and
-  details are still plain.
+Louis Gabriel Malig 2215-6APSI CS403
 
-**Next steps**
 
-- Improve the styling drastically across all four screens.
-- Add basic security or access rules beyond the current open policy.
-- Fix and improve the forms, with better validation and error messages.
-- Add delete confirmation for entries and presets.
-- Take real screenshots of all four screens.
+**AI usage:** 
 
----
+![Built with AI assistance]([https://img.shields.io/badge/built%20with-AI%20assistance-0b5fff](https://img.shields.io/badge/built%20with-AI%20assistance-0b5fff))
 
-**AI usage:** Parts of this project (the proposal notes, wireframes,
-design system, and some of the code and documentation) were created with
-help from an AI assistant (Claude). See `AI-USAGE.md` for more detail.
+This project was built with Claude as an AI development assistant. Claude was used heavily for the frontend, including UI design, page structure, styling, animations, and feature implementation. I was mainly responsible for the backend and data layer, including designing the Supabase database schema, Row Level Security (RLS) policies, and the main database logic. I also reviewed, changed, and tested AI-generated code when needed.
+
+For the full record of how AI was used, what was kept or changed, and where the AI made mistakes, see [AI-USAGE.md](AI-USAGE.md).
+
+
+# Licence
+
+MIT, see [LICENSE](LICENSE). Put your own name in it.
