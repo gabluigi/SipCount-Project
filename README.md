@@ -177,4 +177,4 @@ For the full record of how AI was used, what was kept or changed, and where the 
 
 # Licence
 
-MIT, see [LICENSE](LICENSE). 
+MIT, see [LICENSE](LICENSE.txt). 
