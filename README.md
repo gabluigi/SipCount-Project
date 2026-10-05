@@ -1,7 +1,5 @@
 # SipCount
 
-![Built with AI assistance](https://img.shields.io/badge/built%20with-AI%20assistance-0b5fff)
-
 ## 1. Overview
 
 SipCount is a small app for logging drinks, both alcoholic and
@@ -11,8 +9,10 @@ week is going, in total drinks and total calories. It is for people who
 drink socially or moderately and want a faster way to track this than a
 general calorie app.
 
-**Live site:** 
-WIP - Security features needed first resolved
+**Live site:**
+WIP 
+
+![SipCount Home Page](docs/screenshots/home.png)
 
 ## 2. Setup and installation
 
@@ -41,8 +41,8 @@ Run this from the repository root (the folder containing `client/`):
 npm --prefix client install
 ```
 
-This installs React, `react-router-dom` (for the four screens),
-`recharts` (for the chart on the Monitoring screen), and
+This installs React, `react-router-dom` (for the five screens),
+`recharts` (for the charts on the Monitoring screen), and
 `@supabase/supabase-js` (to connect to the database).
 
 **Database setup**
@@ -52,10 +52,11 @@ database) for persistent storage, instead of only saving data in the
 browser.
 
 1. Create a free project at supabase.com.
-2. Open the SQL Editor and run the schema script in `docs/supabase-schema.sql`.
-   This creates the `entries` and `presets` tables, sets basic access
-   rules, and fills in the built-in drink presets.
-3. Go to **Settings > API Keys** and copy your **Project URL** and your
+2. Open the SQL Editor and run the schema script in
+   `client/supabase-schema.sql`. This creates the `entries`, `presets`, and
+   `posse` tables, enables Row Level Security on each, and fills in the
+   built-in drink presets.
+3. Go to **Settings > API Keys** and copy your **Project URL** and your 
    **Publishable key** (`sb_publishable_...`). Use the new key system, not
    the older `anon` key, since Supabase is phasing that one out.
 
@@ -91,27 +92,29 @@ today's date marked, and a panel below it showing that day's logged
 drinks. If you already added presets through the SQL script, the Drinks
 screen should also show them right away.
 
-## 4. Features and usage - WIP
+## 4. Features and usage
 
 **Home (`/`)**
 Shows a month calendar. Days with logged drinks are marked. Tapping a day
-opens a panel below the calendar with that day's entries and a running
-total. Each entry can be edited or deleted right there, inline. A
-"+ Add drink" button opens the Add screen, already set to the day you
-picked.
+opens a panel below the calendar with that day's entries, each entry's
+note, and a running total. Each entry (including its note) can be edited
+or deleted right there, inline. A "+ Add drink" button opens the Add
+screen, already set to the day you picked.
 
 **Add (`/add`)**
 A form to log a new drink. You can either search and pick a drink from
 the presets, or switch to "Custom" and type your own. Fields include
-size, ABV (optional), date, and an optional note. Calories fill in
-automatically when you pick a preset, but you can always change the
-number by hand. Saving writes the entry to Supabase and returns you to
-Home, with the new entry visible.
+size, volume in millilitres, ABV (optional), date, and an optional note.
+Calories fill in automatically when you pick a preset, but you can always
+change the number by hand. Saving writes the entry to Supabase and
+returns you to Home, with the new entry visible.
 
 **Monitoring (`/history`)**
-Shows the current week's totals: number of drinks and total calories.
-You can switch between a chart view and a plain numbers view for the
-day-by-day breakdown.
+Shows the current week's totals (drinks and calories), with a chart or
+plain-numbers toggle for the day-by-day breakdown. Below that, a 12-tile
+month picker shows a week-by-week breakdown for whichever month you
+select, with a toggle between total calories and grams of alcohol
+(calculated from volume × ABV, not just raw ABV percentage).
 
 **Drinks (`/drinks`)**
 A list of preset drinks (beer, wine, cocktails/spirits, and other drinks
@@ -120,35 +123,56 @@ filter by category. You can also add your own custom presets, and edit
 or delete the ones you added. Built-in presets cannot be edited or
 deleted.
 
+**Games (`/games`)**
+A lighthearted extra page, not part of the core tracking: add people to a
+"posse" list with an individual drink counter, spin a wheel to randomly
+pick someone from that list, and pull a random prompt from four
+categories (Never Have I Ever, Kings Cup, Truth or Drink, Most Likely
+To). The posse list is saved to Supabase; the prompts themselves are
+hardcoded in the app, not stored in the database.
+
 SipCount does not have its own backend server. The React app talks
 directly to Supabase's built-in API, using the publishable key and the
-access rules set up in the schema script.
+Row Level Security policies set on each table.
 
-## 5. Project structure - WIP
+## 5. Project structure
 
 ```
 SipCount-Project/
-├── client/                the SipCount React app (this is what runs)
+├── README.md
+├── SECURITY-CHECKLIST.md   audit of secrets, access control, and data handling
+├── AI-USAGE.md             record of how AI assistance was used
+├── client/                 the SipCount React app (this is what runs)
 │   ├── index.html
 │   ├── package.json
 │   ├── .env.example
+│   ├── supabase-schema.sql   run once in the Supabase SQL Editor to set up
+│   │                         the entries, presets, and posse tables + RLS
 │   └── src/
 │       ├── main.jsx
-│       ├── App.jsx           routes and providers
+│       ├── App.jsx           routes, providers, and the WelcomeGate wrapper
 │       ├── tokens.css        design system tokens (color, type, spacing)
 │       ├── lib/
-│       │   └── supabaseClient.js   connects to Supabase
-│       ├── context/          shared state: entries and presets (Supabase-backed)
-│       ├── data/              category list for the Drinks filter
-│       ├── utils/             date helper functions
+│       │   ├── supabaseClient.js   connects to Supabase
+│       │   ├── entriesRepo.js      Supabase calls for drink entries
+│       │   ├── presetsRepo.js      Supabase calls for drink presets
+│       │   └── posseRepo.js        Supabase calls for the Games posse list
+│       ├── context/           shared React state: entries, presets, posse
+│       │                      (each calls its matching repo file above)
+│       ├── data/               category list for Drinks, and the hardcoded
+│       │                      scenario prompts for Games
+│       ├── utils/              date helpers and the alcohol-grams formula
 │       ├── components/
-│       │   ├── atoms/         e.g. Button
-│       │   ├── molecules/     e.g. EntryRow, TogglePill, CalendarCell
-│       │   └── organisms/     e.g. NavBar, CalendarGrid, SelectedDayPanel
-│       └── pages/             Home, Add, Monitoring, Drinks
+│       │   ├── atoms/          e.g. Button, WelcomeGate
+│       │   ├── molecules/      e.g. EntryRow, TogglePill, PosseRow
+│       │   └── organisms/      e.g. NavBar, CalendarGrid, SpinWheel,
+│       │                      ScenarioPicker
+│       └── pages/              Home, Add, Monitoring, Drinks, Games
 ├── server/                 not used — see note below
-└── docs/                    planning documents, weekly reports, and the
-                             Supabase schema script (supabase-schema.sql)
+└── docs/                    planning documents and weekly reports. A
+                             Supabase schema script is planned here
+                             (`supabase-schema.sql`) but not committed yet —
+                             see SECURITY-CHECKLIST.md, item 15.
 ```
 
 **A note on the `server/` folder:** this project does not use a custom
@@ -156,9 +180,31 @@ backend. SipCount talks to Supabase's own built-in API directly from the
 React app, so there is no separate Express server to write. The `server/`
 folder is left empty on purpose.
 
-## 6. Screenshots - WIP
+## 6. Screenshots 
 
-Screenshots are not included yet. 
+### Home 
+
+![SipCount Home Page](docs/screenshots/home.png)
+
+
+### Add
+
+![SipCount Add Page](docs/screenshots/add.png)
+
+
+### Monitoring
+
+![SipCount Monitoring Page](docs/screenshots/monitor.png)
+
+
+### Drinks
+
+![SipCount Drinks Page](docs/screenshots/drinks.png)
+
+
+### Games
+
+![SipCount Games Page](docs/screenshots/games.png)
 
 
 ## Author
