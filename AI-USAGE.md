@@ -16,7 +16,7 @@ This project was built with AI assistance. This file is the record of it.
 
 - **Tool:** Claude
 - **What I asked for:** Asked Claude to help connect the app to a real Supabase database, so entries and drink presets are saved instead of lost on refresh.
-- **What it gave back:** A Supabase client setup and direct Supabase calls added inside the Context files (EntriesContext, PresetsContext).
+- **What it gave back:** A Supabase client setup and direct Supabase calls added inside the Context files (supabaseClient.js).
 - **What I kept, what I changed, and why:** I wrote the actual Supabase table schema and the CRUD logic myself. Claude helped me wire the calls into the existing Context state. I kept this structure for about a week before refactoring it (see next entry). Initially also, early instructions asked me to use legacy credentials, instead I used non-legacy since it is more safer and preferable.
 - **Commit:** https://github.com/gabluigi/SipCount-Project/commit/78561be0a7e070e60d504d5037a938dc5f835530
 
@@ -40,7 +40,7 @@ This project was built with AI assistance. This file is the record of it.
 
 - **Tool:** Claude
 - **What I asked for:** Claude initially misinterpreted what I want in the monitoring page, so I asked Claude assistance on a way to monitor alcohol intake per month, not just calories.
-- **What it gave back:** A new `alcohol.js` helper using the standard formula (volume × ABV% × ethanol density) using standard uinit drinks, and a toggle on the Monitoring page to switch between calories and grams of alcohol.
+- **What it gave back:** A new `alcohol.js` helper using the standard formula (volume × ABV% × ethanol density)/8 using standard uinit drinks, and a toggle on the Monitoring page to switch between calories and grams of alcohol.
 - **What I kept, what I changed, and why:** I kept the ui implementations however I opted and implemented a more simpler alcohol intake computation. I replaced standard unit drinks which varied by country (Claude used UK units) and used grams alcohol instead (simpler and direct). Felt like the initial formula was way to complex for an app this silly so I had that changed.
 - **Commit:** https://github.com/gabluigi/SipCount-Project/commit/ddba30c11063a85848b2ee07c1f1c20b13ed9c57
 
@@ -67,9 +67,16 @@ This project was built with AI assistance. This file is the record of it.
 - **What it gave me:** A CSS fix meant to center the player names on the spinning wheel more precisely, using `height: 0` combined with `overflow: hidden` on the label element.
 - **What was wrong with it:** `overflow: hidden` on a zero-height box hides everything inside it, including the actual text. The fix for centering accidentally deleted the visible names from the wheel.
 - **What I did instead:** I reported that the names were missing. Claude split the label into two parts: an outer wrapper (kept at `height: 0`, used only for position) and an inner span that holds the real text and is not zero-height, so nothing gets clipped.
-- **Commit:** https://github.com/gabluigi/SipCount-Project/commit/623312b478682c6a83a7a69c4d38dc0d14437a99
+- **Commit:** https://github.com/gabluigi/SipCount-Project/commit/7ef24d2bd6bc444950d6c47094cb70a8fe20a936
 
-### Case 3 - Bugged Mobile Refresh
+### Case 3 - Notes field existed but was never shown or editable
+
+- **What it gave me:** An earlier version of the app that let a user type a note when adding a drink, but the note was never displayed anywhere on the entry afterward, and there was no way to edit it later.
+- **What was wrong with it:** The data field existed and was being saved, but it served no real purpose to the user, since they could never see or change a note once it was saved.
+- **What I did instead:** I asked Claude to fix this, so notes now show below the size/ABV line on each entry, and can be edited the same way the other fields can.
+- **Commit:** https://github.com/gabluigi/SipCount-Project/commit/505713de0eae170ee1e6a566419890cb0c8189ae
+
+### Case 4 - Bugged Mobile Refresh
 
 - **What it gave me:** When in mobile, refreshing in home works fine, but in everywhere else when refreshing the app returns a black screen and `Not Found` text. 
 - **What was wrong with it:**  The likely cause is that the app uses BrowserRouter, but the deployed host may not be configured to serve the app for direct requests to routes like `/history` or `/games`. May also be a frontend issue
@@ -81,12 +88,12 @@ This project was built with AI assistance. This file is the record of it.
 ### Written by me
 
 - **File:** Supabase table schema (entries, presets tables, plus Row Level Security policies)
-- **Commit:** https://github.com/gabluigi/SipCount-Project/commit/78561be0a7e070e60d504d5037a938dc5f835530
+- **Commit:** https://github.com/gabluigi/SipCount-Project/commit/f6c00923660e5357a0d91294891a9fa1ebdc9e93
 - **What it does and why it is built this way:** I designed the table columns myself based on my app proposal, and I set the RLS policies so the app's data is actually protected, not open to anyone with the public key.
 
 - **File:** `Add.jsx`, `Monitoring.jsx`, and `Home.jsx`
 - **Commit:** https://github.com/gabluigi/SipCount-Project/commit/3906462c4cde91e12647d23d5cb6d0bfa78a4758
-- **What it does and why it is built this way:** These files handle the main user functions for recording and monitoring drinking activity. `Home.jsx` serves as the main page where users can view their information and access the app's main features. `Add.jsx` allows users to add new drink entries and save their information. `Monitoring.jsx` displays the user's recorded drinking activity so they can monitor their progress and consumption. I built these components to use the data from the application's contexts and repository files instead of directly connecting to Supabase. This keeps the frontend interface separate from the database logic and makes the code easier to maintain and update.
+- **What it does and why it is built this way:** These files handle the main user functions for recording and monitoring drinking activity. `Home.jsx` serves as the main page where users can view their information and access the app's main features as it shows the monthly calendar and that day's logged entries. `Add.jsx` allows users to add new drink entries and save their information. `Monitoring.jsx` displays the user's recorded drinking activity so they can monitor their progress and consumption. I built these components to use the data from the application's contexts and repository files instead of directly connecting to Supabase. This keeps the frontend interface separate from the database logic and makes the code easier to maintain and update.
 
 - **File:** `EntriesContext.jsx`, `PresetsContext.jsx`, and `PosseContext.jsx`
 - **Commit:** added here https://github.com/gabluigi/SipCount-Project/commit/3906462c4cde91e12647d23d5cb6d0bfa78a4758
@@ -103,4 +110,4 @@ and https://github.com/gabluigi/SipCount-Project/commit/7ef24d2bd6bc444950d6c470
 
 - **File:** `entriesRepo.js` and `presetsRepo.js`
 - **Commit:** https://github.com/gabluigi/SipCount-Project/commit/7a1a68b802a3590279e4e0882d94f2a4abcbf15c
-- **What it does and why we kept it:** These files handle the database operations for drink entries and drink presets using Supabase. They allow the app to add, get, update, and delete data from the database. I understand these files best because they contain the main database functions used by the app. Kept this code because is essential and separating the database operations from the UI makes the project more organized and easier to maintain. It also allows other parts of the app to reuse the same functions instead of writing the same Supabase queries again.
+- **What it does and why we kept it:** These files handle the database operations for drink entries and drink presets using Supabase. They allow the app to add, get, update, and delete data from the database. I understand these files best because they contain the main database functions used by the app. Kept this code because is essential and separating the database operations from the UI makes the project more organized and easier to maintain. It also means if I ever add another part of the app that needs this data, it can reuse these same functions instead of writing new Supabase queries from scratch.
