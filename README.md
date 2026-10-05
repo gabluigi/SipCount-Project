@@ -1,6 +1,8 @@
 # SipCount
 
-## 1. Overview
+[![Built with AI assistance](https://img.shields.io/badge/built%20with-AI%20assistance-0b5fff)](AI-USAGE.md)
+
+## Overview
 
 SipCount is a small app for logging drinks, both alcoholic and
 non-alcoholic. It lets a single user log a drink in a few taps and see
@@ -14,7 +16,7 @@ WIP
 
 ![SipCount Home Page](docs/screenshots/home.png)
 
-## 2. Setup and installation
+## Setup and installation
 
 **What to install first**
 
@@ -73,7 +75,7 @@ Vite is configured to load environment variables from the repository root.
 `.env` is never committed. Only `.env.example`, with placeholder values,
 is kept in the repository.
 
-## 3. How to run it
+## How to run it
 
 From the repository root, start the app with:
 
@@ -92,7 +94,7 @@ today's date marked, and a panel below it showing that day's logged
 drinks. If you already added presets through the SQL script, the Drinks
 screen should also show them right away.
 
-## 4. Features and usage
+## Features and usage
 
 **Home (`/`)**
 Shows a month calendar. Days with logged drinks are marked. Tapping a day
@@ -135,7 +137,7 @@ SipCount does not have its own backend server. The React app talks
 directly to Supabase's built-in API, using the publishable key and the
 Row Level Security policies set on each table.
 
-## 5. Project structure
+## Project structure
 
 ```
 SipCount-Project/
@@ -180,7 +182,7 @@ backend. SipCount talks to Supabase's own built-in API directly from the
 React app, so there is no separate Express server to write. The `server/`
 folder is left empty on purpose.
 
-## 6. Screenshots 
+## Screenshots 
 
 ### Home 
 
@@ -207,20 +209,26 @@ folder is left empty on purpose.
 ![SipCount Games Page](docs/screenshots/games.png)
 
 
+## Architecture  - WIP 
+Three or four sentences, or a small diagram. Which piece talks to which, and where each one is hosted.
+
+
+## What I would do next - WIP
+Three honest bullets. This paragraph is worth more than it looks.
+
+
 ## Author
 
 Louis Gabriel Malig 2215-6APSI CS403
 
 
-**AI usage:** 
-
-![Built with AI assistance](https://img.shields.io/badge/built%20with-AI%20assistance-0b5fff)
+## AI use
 
 This project was built with Claude as an AI development assistant. Claude was used heavily for the frontend, including UI design, page structure, styling, animations, and feature implementation. I was mainly responsible for the backend and data layer, including designing the Supabase database schema, Row Level Security (RLS) policies, and the main database logic. I also reviewed, changed, and tested AI-generated code when needed.
 
 For the full record of how AI was used, what was kept or changed, and where the AI made mistakes, see [AI-USAGE.md](AI-USAGE.md).
 
 
-# Licence
+## Licence
 
 MIT, see [LICENSE](LICENSE.txt). 
