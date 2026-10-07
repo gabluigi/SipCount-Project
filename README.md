@@ -11,8 +11,11 @@ week is going, in total drinks and total calories. It is for people who
 drink socially or moderately and want a faster way to track this than a
 general calorie app.
 
-**Live site:**
-WIP 
+**Live site:**  
+
+https://sipcount.onrender.com/login - Live Site (app may take up to a minute to wake up on its free-tier server)
+
+https://drive.google.com/drive/folders/1YZnmqiAUTF5H0yxxc_XkoBmT11S4qMPu?usp=sharing - Video Demo, PPT, SquareImage, etc.
 
 ![SipCount Home Page](docs/screenshots/home.png)
 
@@ -32,62 +35,83 @@ git clone https://github.com/gabluigi/SipCount-Project.git
 cd SipCount-Project
 ```
 
-The app lives inside the `client/` folder. The commands below are run from
-the repository root unless noted otherwise.
+The React app lives inside `client/`. The small password-gate server
+lives inside `server/`. The commands below are run from the repository
+root unless noted otherwise.
 
 **How to install dependencies**
 
-Run this from the repository root (the folder containing `client/`):
+Run this from the repository root (the folder containing `client/` and
+`server/`):
 
 ```
 npm --prefix client install
+npm --prefix server install
 ```
 
-This installs React, `react-router-dom` (for the five screens),
-`recharts` (for the charts on the Monitoring screen), and
-`@supabase/supabase-js` (to connect to the database).
+The client install brings in React, `react-router-dom` (for the five
+screens), `recharts` (for the charts on the Monitoring screen), and
+`@supabase/supabase-js` (to connect to the database). The server install
+brings in Express, `cookie-parser`, and `dotenv` — just enough to run the
+password gate in front of the built app.
 
 **Database setup**
 
-SipCount now uses [Supabase](https://supabase.com) (a hosted PostgreSQL
-database) for persistent storage, instead of only saving data in the
-browser.
+SipCount uses [Supabase](https://supabase.com) (a hosted PostgreSQL
+database) for persistent storage.
 
 1. Create a free project at supabase.com.
 2. Open the SQL Editor and run the schema script in
    `client/supabase-schema.sql`. This creates the `entries`, `presets`, and
    `posse` tables, enables Row Level Security on each, and fills in the
    built-in drink presets.
-3. Go to **Settings > API Keys** and copy your **Project URL** and your 
+3. Go to **Settings > API Keys** and copy your **Project URL** and your
    **Publishable key** (`sb_publishable_...`). Use the new key system, not
    the older `anon` key, since Supabase is phasing that one out.
 
 **Environment and configuration**
 
-Copy `.env.example` to `.env` in the repository root and fill in your own values:
+Copy `.env.example` to `.env` in the repository root and fill in your own
+values. One `.env` file covers both the client build and the password
+gate server:
 
 | Name | What it is |
 | --- | --- |
 | `VITE_SUPABASE_URL` | Your Supabase project's base URL, for example `https://your-project-ref.supabase.co` (no extra path after `.co`) |
 | `VITE_SUPABASE_PUBLISHABLE_KEY` | Your project's publishable key from Settings > API Keys |
+| `SITE_PASSWORD` | The password someone must enter before the app loads |
+| `COOKIE_SECRET` | A long random string used to sign the login cookie — not something anyone types, just needs to be unpredictable |
 
-Vite is configured to load environment variables from the repository root.
-`.env` is never committed. Only `.env.example`, with placeholder values,
-is kept in the repository.
+Vite is configured to load environment variables from the repository
+root (`envDir: '..'` in `client/vite.config.js`), and only reads the
+`VITE_`-prefixed ones into the built app — `SITE_PASSWORD` and
+`COOKIE_SECRET` never reach the browser. The server reads the same root
+`.env` file directly via `dotenv`. `.env` is never committed; only
+`.env.example`, with placeholder values, is kept in the repository.
 
 ## How to run it
 
-From the repository root, start the app with:
+**For day-to-day development** (fast reload, but no password gate — this
+is Vite's own dev server, separate from the gate):
 
 ```
 npm --prefix client run dev
 ```
 
-Then open the address shown in the terminal, usually:
+Then open the address shown in the terminal, usually
+`http://localhost:5173`.
+
+**To run it the way it actually runs in production**, with the password
+gate in front:
 
 ```
-http://localhost:5173
+npm --prefix client run build
+node server/server.js
 ```
+
+Then open `http://localhost:3000`. You should be asked for the password
+before the app loads — enter the `SITE_PASSWORD` value from your `.env`
+file.
 
 When it works, you should see the Home screen: a month calendar, with
 today's date marked, and a panel below it showing that day's logged
@@ -133,9 +157,11 @@ categories (Never Have I Ever, Kings Cup, Truth or Drink, Most Likely
 To). The posse list is saved to Supabase; the prompts themselves are
 hardcoded in the app, not stored in the database.
 
-SipCount does not have its own backend server. The React app talks
-directly to Supabase's built-in API, using the publishable key and the
-Row Level Security policies set on each table.
+Once past the password gate, the React app talks directly to Supabase's
+built-in API, using the publishable key and the Row Level Security
+policies set on each table. The gate server does not sit between the app
+and Supabase — it only controls whether the app's files are served at
+all.
 
 ## Project structure
 
@@ -144,15 +170,15 @@ SipCount-Project/
 ├── README.md
 ├── SECURITY-CHECKLIST.md   audit of secrets, access control, and data handling
 ├── AI-USAGE.md             record of how AI assistance was used
-├── client/                 the SipCount React app (this is what runs)
+├── .env.example            one shared template for client + server variables
+├── client/                 the SipCount React app
 │   ├── index.html
 │   ├── package.json
-│   ├── .env.example
 │   ├── supabase-schema.sql   run once in the Supabase SQL Editor to set up
 │   │                         the entries, presets, and posse tables + RLS
 │   └── src/
 │       ├── main.jsx
-│       ├── App.jsx           routes, providers, and the WelcomeGate wrapper
+│       ├── App.jsx           routes and providers
 │       ├── tokens.css        design system tokens (color, type, spacing)
 │       ├── lib/
 │       │   ├── supabaseClient.js   connects to Supabase
@@ -165,62 +191,81 @@ SipCount-Project/
 │       │                      scenario prompts for Games
 │       ├── utils/              date helpers and the alcohol-grams formula
 │       ├── components/
-│       │   ├── atoms/          e.g. Button, WelcomeGate
+│       │   ├── atoms/          e.g. Button
 │       │   ├── molecules/      e.g. EntryRow, TogglePill, PosseRow
 │       │   └── organisms/      e.g. NavBar, CalendarGrid, SpinWheel,
 │       │                      ScenarioPicker
 │       └── pages/              Home, Add, Monitoring, Drinks, Games
-├── server/                 not used — see note below
-└── docs/                    planning documents and weekly reports. A
-                             Supabase schema script is planned here
-                             (`supabase-schema.sql`) but not committed yet —
-                             see SECURITY-CHECKLIST.md, item 15.
+├── server/                 the password-gate server (see note below)
+│   ├── package.json
+│   ├── server.js            Express: checks the password, sets a signed
+│   │                        cookie, then serves client/dist
+│   └── public/
+│       └── login.html        the password screen itself (plain HTML, no
+│                              build step, styled to match tokens.css)
+└── docs/                    planning documents, weekly reports, screenshots
 ```
 
-**A note on the `server/` folder:** this project does not use a custom
-backend. SipCount talks to Supabase's own built-in API directly from the
-React app, so there is no separate Express server to write. The `server/`
-folder is left empty on purpose.
+**A note on the `server/` folder:** this is not a backend API for the
+app's data — SipCount still talks to Supabase directly from the browser
+for every drink, preset, and posse entry. `server/` exists for one
+narrow job: nobody can load the app's files at all without the right
+password first. Once past it, the server gets out of the way entirely.
 
-## Screenshots 
+## Screenshots
 
-### Home 
+### Home
 
 ![SipCount Home Page](docs/screenshots/home.png)
-
 
 ### Add
 
 ![SipCount Add Page](docs/screenshots/add.png)
 
-
 ### Monitoring
 
 ![SipCount Monitoring Page](docs/screenshots/monitor.png)
-
 
 ### Drinks
 
 ![SipCount Drinks Page](docs/screenshots/drinks.png)
 
-
 ### Games
 
 ![SipCount Games Page](docs/screenshots/games.png)
 
+## Architecture
 
-## Architecture  - WIP 
-Three or four sentences, or a small diagram. Which piece talks to which, and where each one is hosted.
+Two pieces, hosted together on the same Render Web Service, doing
+different jobs. **`server/`** is a small Express process that checks a
+password against an environment variable, and only then serves the
+already-built **`client/`** React app as static files — this is what
+makes the whole site require a login before anything loads. Once the
+browser has that app, it talks **directly to Supabase** for every read
+and write (entries, presets, posse) — the Express server is never in
+that path, it only gated the initial page load. Supabase's own Row Level
+Security policies, not the Express server, are what protect the actual
+data once someone is past the login screen.
 
+## What I would do next
 
-## What I would do next - WIP
-Three honest bullets. This paragraph is worth more than it looks.
-
+- **Rewrite history to remove the old hardcoded password.** An earlier
+  version of the login gate had a password hardcoded directly in source;
+  the file is deleted now, but `git log -p` still finds it in an old
+  commit. Rewriting history to actually scrub it is the next real step,
+  rather than just leaving it as a documented known issue. I hardcoded in 
+  the first place because of initial time constraints
+- **Add a "remember me" expiry that's actually configurable**, instead of
+  the fixed 24-hour cookie — useful for a longer grading window without
+  loosening security for everyday use.
+- **Investigate unexpected bug fix**, study how the old "mobile refresh returns 
+  404" bug from earlier testing is now fixed as a side effect of the new server's 
+  catch-all route, which serves `index.html` for any unmatched path — so a hard 
+  refresh on `/history` or `/games` works correctly now.
 
 ## Author
 
 Louis Gabriel Malig 2215-6APSI CS403
-
 
 ## AI use
 
@@ -230,7 +275,6 @@ This project was built with Claude as an AI development assistant. Claude was us
 
 For the full record of how AI was used, what was kept or changed, and where the AI made mistakes, see [AI-USAGE.md](AI-USAGE.md).
 
-
 ## Licence
 
-MIT, see [LICENSE](LICENSE.txt). 
+MIT, see [LICENSE](LICENSE.txt).

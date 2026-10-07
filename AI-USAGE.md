@@ -104,6 +104,9 @@ and https://github.com/gabluigi/SipCount-Project/commit/7ef24d2bd6bc444950d6c470
 - **Commit:** https://github.com/gabluigi/SipCount-Project/commit/7ef24d2bd6bc444950d6c47094cb70a8fe20a936
 - **What it does and why it is built this way:** These files handle the data used by the drinking games feature. posseRepo.js connects to the Supabase posse table and handles adding, updating, and deleting people. PosseContext.jsx manages this data inside the React app and keeps the screen updated after a database change. I built it this way so the drinking game feature can save its data instead of only keeping it temporarily in the browser. It also keeps the database code separate from the game interface.
 
+- **File:** `server.js`
+- **Commit:** https://github.com/gabluigi/SipCount-Project/commit/f205ee8e178327ef83993691e99e3961be2cb9be
+- **What it does and why it is built this way:** This file checks a password before anyone can open the app, using a small Express server instead of checking the password in the browser. The server reads the real password from an environment variable, never from the code itself, and only gives a signed cookie to the browser after the password is correct. I built it this way because a check done only in the browser's code can be read and bypassed by anyone, but a check done on the server cannot be seen or skipped from outside
 
 
 ### The AI-written part I understand best
