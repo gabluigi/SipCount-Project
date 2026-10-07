@@ -1,10 +1,14 @@
+import dotenv from 'dotenv';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const app = express();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+dotenv.config({ path: path.join(__dirname, '..', '.env') });
+
+const app = express();
 const PORT = process.env.PORT || 3000;
 
 const SITE_PASSWORD = process.env.SITE_PASSWORD;
@@ -41,6 +45,10 @@ app.post('/login', (req, res) => {
   }
 
   res.redirect('/login?error=1');
+});
+
+app.get('/sipcountlogo.svg', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'sipcountlogo.svg'));
 });
 
 // Everything below this line requires the signed cookie set above.
