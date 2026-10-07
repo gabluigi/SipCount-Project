@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SipCount — Sign in</title>
+  <style>
+  :root {
+    --color-bg: #FFF897;
+    --color-surface: #FAE96F;
+    --color-strong: #C96E12;
+    --color-primary: #DF8D03;
+    --color-text: #241502;
+    --field-bg: #fffbe2;
+    --field-border: #d6c989;
+    --field-focus: #DF8D03;
+    --field-radius: 10px;
+    --font-size-lg: 28px;
+    --font-size-md: 16px;
+    --font-size-sm: 13px;
+    --font-heading: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --space-1: 8px;
+    --space-2: 16px;
+    --space-3: 24px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: #17140f;
+      --color-surface: #262116;
+      --color-strong: #e8ac4e;
+      --color-primary: #df8d03;
+      --color-text: #fff4d6;
+      --field-bg: #201b13;
+      --field-border: #746344;
+      --field-focus: #f6bd4f;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--color-bg);
+    background-image:
+      radial-gradient(
+        ellipse 110% 48% at 50% 100%,
+        color-mix(in srgb, var(--color-strong) 10%, transparent),
+        transparent 100%
+      ),
+      radial-gradient(
+        ellipse 120% 55% at 50% 0%,
+        color-mix(in srgb, white 14%, transparent),
+        transparent 100%
+      ),
+      linear-gradient(
+        180deg,
+        transparent 55%,
+        color-mix(in srgb, var(--color-text) 4%, transparent)
+      );
+    color: var(--color-text);
+    font-family: var(--font-body);
+    color-scheme: light dark;
+    isolation: isolate;
+  }
+
+  body::before,
+  body::after {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    content: "";
+    pointer-events: none;
+    background-repeat: repeat;
+    will-change: transform;
+  }
+
+  body::before {
+    opacity: 0.48;
+    background-image:
+      radial-gradient(circle at 12% 18%, color-mix(in srgb, white 55%, transparent) 0 2px, color-mix(in srgb, var(--color-text) 18%, transparent) 2.5px 3.5px, transparent 4px),
+      radial-gradient(circle at 48% 68%, color-mix(in srgb, white 48%, transparent) 0 2.5px, color-mix(in srgb, var(--color-text) 15%, transparent) 3px 4px, transparent 4.5px),
+      radial-gradient(circle at 83% 34%, color-mix(in srgb, white 50%, transparent) 0 1.5px, color-mix(in srgb, var(--color-text) 18%, transparent) 2px 3px, transparent 3.5px),
+      radial-gradient(circle at 29% 88%, color-mix(in srgb, white 45%, transparent) 0 2px, color-mix(in srgb, var(--color-text) 16%, transparent) 2.5px 3.5px, transparent 4px);
+    background-size: 230px 250px;
+    animation: carbonation-rise-near 28s linear infinite;
+  }
+
+  body::after {
+    opacity: 0.28;
+    background-image:
+      radial-gradient(circle at 23% 42%, color-mix(in srgb, white 58%, transparent) 0 3px, color-mix(in srgb, var(--color-text) 16%, transparent) 3.5px 5px, transparent 5.5px),
+      radial-gradient(circle at 71% 12%, color-mix(in srgb, white 52%, transparent) 0 2.5px, color-mix(in srgb, var(--color-text) 18%, transparent) 3px 4.5px, transparent 5px),
+      radial-gradient(circle at 91% 78%, color-mix(in srgb, white 50%, transparent) 0 3.5px, color-mix(in srgb, var(--color-text) 14%, transparent) 4px 5.5px, transparent 6px);
+    background-size: 360px 390px;
+    animation: carbonation-rise-far 42s linear infinite;
+  }
+
+  @keyframes carbonation-rise-near {
+    from { transform: translateY(0); }
+    to { transform: translateY(-250px); }
+  }
+
+  @keyframes carbonation-rise-far {
+    from { transform: translateY(0); }
+    to { transform: translateY(-390px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body::before,
+    body::after {
+      animation: none;
+    }
+  }
+
+  .welcome-gate {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    min-height: 100vh;
+    min-height: 100svh;
+    place-items: center;
+    padding: var(--space-2);
+  }
+
+  .welcome-gate-card {
+    display: flex;
+    width: min(100%, 380px);
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-3);
+    border: 1px solid var(--field-border);
+    border-radius: 16px;
+    background: var(--color-surface);
+    text-align: center;
+    box-shadow: 0 16px 40px rgb(0 0 0 / 10%);
+  }
+
+  .welcome-gate-logo {
+    width: 88px;
+    height: 88px;
+    object-fit: contain;
+  }
+
+  .welcome-gate-card h1 {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-lg);
+    margin: 0;
+  }
+
+  .welcome-gate-brand {
+    margin: 0 0 var(--space-1);
+    color: var(--color-strong);
+    font-weight: 600;
+  }
+
+  .welcome-gate-form {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-1);
+    text-align: left;
+  }
+
+  .welcome-gate-form label {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+  }
+
+  .welcome-gate-form input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    color: var(--color-text);
+    background: var(--field-bg);
+    border: 1px solid var(--field-border);
+    border-radius: var(--field-radius);
+    font-family: var(--font-body);
+    font-size: var(--font-size-md);
+  }
+
+  .welcome-gate-form input:focus-visible {
+    border-color: var(--field-focus);
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--field-focus) 24%, transparent);
+  }
+
+  .welcome-gate-submit {
+    min-height: 44px;
+    margin-top: var(--space-1);
+    padding: 10px 16px;
+    border: 0;
+    border-radius: var(--field-radius);
+    background: var(--color-primary);
+    color: #fff;
+    font-size: var(--font-size-md);
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .welcome-gate-submit:hover {
+    filter: brightness(1.08);
+  }
+
+  .welcome-gate-submit:focus-visible {
+    outline: 2px solid var(--field-focus);
+    outline-offset: 3px;
+  }
+
+  .welcome-gate-error {
+    margin: 0;
+    color: #b33;
+    font-size: var(--font-size-sm);
+    display: none;
+  }
+
+  .welcome-gate-error.show {
+    display: block;
+  }
+</style>
+</head>
+<body>
+  <main class="welcome-gate">
+    <section class="welcome-gate-card" aria-labelledby="welcome-title">
+      <img class="welcome-gate-logo" src="/sipcountlogo.svg" alt="" />
+      <h1 id="welcome-title">Welcome Back Louis!</h1>
+      <p class="welcome-gate-brand">SipCount</p>
+
+      <form class="welcome-gate-form" method="POST" action="/login">
+        <label for="welcome-password">Password</label>
+        <input
+          id="welcome-password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          required
+          autofocus
+        />
+        <p class="welcome-gate-error" id="welcome-error" role="alert">
+          That password is incorrect. Please try again.
+        </p>
+        <button class="welcome-gate-submit" type="submit">Enter SipCount</button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('error')) {
+      document.getElementById('welcome-error').classList.add('show');
+    }
+  </script>
+</body>
+</html>

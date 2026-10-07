@@ -224,6 +224,8 @@ Louis Gabriel Malig 2215-6APSI CS403
 
 ## AI use
 
+![Claude](https://img.shields.io/badge/claude-%23D97757.svg?style=for-the-badge&logo=claude&logoColor=white)
+
 This project was built with Claude as an AI development assistant. Claude was used heavily for the frontend, including UI design, page structure, styling, animations, and feature implementation. I was mainly responsible for the backend and data layer, including designing the Supabase database schema, Row Level Security (RLS) policies, and the main database logic. I also reviewed, changed, and tested AI-generated code when needed.
 
 For the full record of how AI was used, what was kept or changed, and where the AI made mistakes, see [AI-USAGE.md](AI-USAGE.md).
