@@ -13,7 +13,7 @@ general calorie app.
 
 **Live site:**  
 
-https://sipcount.onrender.com/login - Live Site (app may take up to a minute to wake up on its free-tier server)
+https://sipcount.onrender.com/login - Live Site (app may take up to a minute to wake up on its free-tier server, required credentials are located at project/README.md)
 
 https://drive.google.com/drive/folders/1YZnmqiAUTF5H0yxxc_XkoBmT11S4qMPu?usp=sharing - Video Demo, PPT, SquareImage, etc.
 

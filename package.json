@@ -3,5 +3,8 @@
   "private": true,
   "scripts": {
     "dev": "npm --prefix client run dev"
+  },
+  "dependencies": {
+    "helmet": "^8.3.0"
   }
 }
