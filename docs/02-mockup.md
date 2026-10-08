@@ -13,7 +13,7 @@ SipCount originally had four screen, here is the following:
 
 ### Home (`/`)
 
-![Home](docs/assets/wfhome.png)
+![Home](assets/wfhome.png)
 
 Month calendar with a dot on days that have drinks. The panel below shows
 the selected day: each entry with its calories, edit and delete links, and
@@ -21,14 +21,14 @@ a total (for example "1 drink · 140 kcal today").
 
 ### Add (`/add`)
 
-![Add](docs/assets/wfadd.png)
+![Add](assets/wfadd.png)
 
 Form for a new drink: preset or custom, size, volume, ABV, calories, date
 and note.
 
 ### Monitoring (`/history`)
 
-![Monitoring](docs/assets/wfmonitor.png)
+![Monitoring](assets/wfmonitor.png)
 
 Current-week chart with a Chart / Numbers toggle. Below it, 12 month tiles
 and a week-by-week chart for the selected month, switchable between
@@ -36,7 +36,7 @@ alcohol (grams) and calories.
 
 ### Drinks (`/drinks`)
 
-![Drinks](docs/assets/wfdrinks.png)
+![Drinks](assets/wfdrinks.png)
 
 Preset list with search and category filter, and a form for custom presets.
 
@@ -66,7 +66,7 @@ hamburger menu, and the edit grid and other layouts adjust).
 
 Mobile Responsiveness Sample:
 
-![Mobile](docs/screenshots/mobile.png)
+![Mobile](screenshots/mobile.png)
 
 ## Honest note: what changed from the plan
 

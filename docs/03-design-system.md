@@ -3,7 +3,9 @@
 The rules the interface follows, as they exist in the code today. All
 values come from `client/src/tokens.css` and the component CSS files.
 
-**Visual document:** [docs/design-system-swatches.png](docs/assets/designsystem.png)
+**Visual document:** 
+
+![Design System](assets/designsystem.png)
 shows every colour token, buttons, fonts, etc
 
 
