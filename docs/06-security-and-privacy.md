@@ -1,8 +1,5 @@
 # Security and privacy checklist
 
-Filled in from [SECURITY-CHECKLIST.md](SECURITY-CHECKLIST.md), which is the
-detailed audit. 
-
 ## Before the first push
 
 - [x] `.gitignore` includes `.env`, and `git check-ignore -v .env` confirms it.
@@ -44,9 +41,8 @@ has not been removed from history.
       the server sends short responses with no stack trace.
       `NODE_ENV`.
 - [x] `helmet` installed. which is one line for several real protections
-- [ ] Anything that costs money or accepts a password is rate limited.
-      The login form accepts a password, and the audit does
-      not record any rate limit on it, so it is not ticked.
+- [x] Anything that costs money or accepts a password is rate limited. Added a simple 
+      rate limiter to server.js
 - [ ] **N/A** Passwords, if you have accounts, are hashed with bcrypt and never logged.
       There are no user accounts. Access is one shared app password
       read from an environment variable 

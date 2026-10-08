@@ -3,12 +3,24 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import rateLimit from 'express-rate-limit';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
 const app = express();
+// Render sits behind a proxy, so trust one hop to see the real client IP.
+app.set('trust proxy', 1);
+
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: 'Too many attempts. Try again in 15 minutes.',
+});
+
 const PORT = process.env.PORT || 3000;
 
 const SITE_PASSWORD = process.env.SITE_PASSWORD;
@@ -30,7 +42,7 @@ app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-app.post('/login', (req, res) => {
+app.post('/login', loginLimiter, (req, res) => {
   const { password } = req.body;
 
   if (password === SITE_PASSWORD) {
